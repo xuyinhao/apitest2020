@@ -1,3 +1,7 @@
+'''
+    基本的 通用的工具 方法 存放位置
+'''
+
 class CommonUtil():
     def is_contain(self, str_src, str_dst):
         flag = False

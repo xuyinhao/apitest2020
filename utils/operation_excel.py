@@ -1,12 +1,10 @@
-import xlrd
-import xlwt
-
-
-
+# 使用 openpyxl
+import openpyxl
+import sys
 
 
 class OperationExcel():
-    def __init__(self, file_name=None, sheet_id=None,sheet_name=None):
+    def __init__(self, file_name=None, sheet_id=None, sheet_name=None):
         if file_name:
             self.file_name = file_name
         else:
@@ -20,61 +18,87 @@ class OperationExcel():
         else:
             self.sheet_name = "login"
 
-        self.sheet = self.__get_sheet_data()
+        self.ws = self.__get_sheet_data()
 
     # 获取sheets的句柄 内容
     def __get_sheet_data(self):
-        self.data = xlrd.open_workbook(self.file_name)
-        sheet = self.data.sheet_by_index(self.sheet_id)
-        # self.data = load_workbook(self.file_name)
-        # sheet = self.data.get_sheet_by_name(self.sheet_name)
-        return sheet
+        self.wb = openpyxl.load_workbook(self.file_name)
+        # sheets = self.data.get_sheet_by_name(self.sheet_name)
+        sheets = self.wb[self.sheet_name]
+        return sheets
 
     # 获取sheet name
     def get_sheet_name(self):
-        return self.data.sheet_names()[self.sheet_id]         #这 xlrd
-        # return self.sheet_name
+
+        return self.sheet_name
 
     # 获取该sheet单元格的总行数
     def get_sheet_rows_num(self):
-        return self.sheet.nrows
+        return self.ws.max_row
 
     # 获取该sheet单元格的总列数
     def get_sheet_cols_num(self):
-        return self.sheet.ncols
+        return self.ws.max_column
 
-    # 获取该sheet单元个的内容
+    # 获取该sheet单元格的内容
     def get_cell_value(self, row, col):
-        return self.sheet.cell_value(row, col)
+        try:
+            # return self.sheet.cell_value(row,col).value
+            return self.ws.cell(row, col).value
+        except ValueError as e:
+            now_row_col = '. Now row: ' + str(row) + ', col: ' + str(col)
+            return str(sys._getframe().f_code.co_name) + "Error : " + str(e) + now_row_col
 
     # 获取该sheet 指定行的所有内容
     def get_row_value(self, row):
-        return self.sheet.row_values(row)
-        # return self.sheet
+        try:
+            columns = self.ws.max_column
+            rowdata = []
+            for i in range(1, columns + 1):
+                cellvalue = self.ws.cell(row=row, column=i).value
+                rowdata.append(cellvalue)
+            return rowdata
+        except ValueError as e:
+            now_row_col = '. Now row: ' + str(row)
+            return str(sys._getframe().f_code.co_name) + "Error : " + str(e) + now_row_col
 
     # 获取该sheet 指定列的所有内容
     def get_col_value(self, col):
-        return self.sheet.col_values(col)
+        try:
+            columns = self.ws.max_row
+            rowdata = []
+            for i in range(1, columns + 1):
+                cellvalue = self.ws.cell(row=i, column=col).value
+                rowdata.append(cellvalue)
+            return rowdata
 
-    def write_cell_value(self,row,col):
-        workbook = xlwt.Workbook()
-        worksheet  = workbook.add_sheet(self.get_sheet_name())
-        print(self.get_sheet_name())
-        worksheet.write(row,col,'aaaaaa')
-        workbook.save(self.file_name)
+        except ValueError as e:
+            now_row_col = '. Now col: ' + str(col)
+            return str(sys._getframe().f_code.co_name) + "Error : " + str(e) + now_row_col
+
+    def write_cell_value(self, row, col, cellvalue):
+        try:
+            self.ws.cell(row=row, column=col).value = cellvalue
+            self.wb.save(self.file_name)
+        except PermissionError as  e:
+            print("Write error. " + str(e))
+        except ValueError as e:
+            now_row_col = '. Now row: ' + str(row)
+            return str(sys._getframe().f_code.co_name) + "Error : " + str(e) + now_row_col
+
 
 if __name__ == '__main__':
     import time
 
     print(time.time())
     ex = OperationExcel(file_name='../data/case2.xlsx')
-    print(ex.get_row_value(0))
-    print(ex.get_sheet_name())
+    # ex.write_cell_value(1,1,"ID")
+    print(ex.get_cell_value(0, 1))
+    print(ex.get_col_value(99))
     # ex.write_cell_value(0,0)
     print(time.time())
 
-
-#book = xlrd.open_workbook('../data/case.xlsx')  # 得到excel文件的操作对象
+# book = xlrd.open_workbook('../data/case.xlsx')  # 得到excel文件的操作对象
 # #得到sheet对象
 # sheet0 = book.sheet_by_index(0)     #通过sheet索引 得到sheet对象
 # sheet_name = book.sheet_names()[0]  #获得指定 索引的sheet名字

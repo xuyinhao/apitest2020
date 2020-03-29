@@ -4,7 +4,6 @@ try:
 except:
     print("Import error")
 
-
 class RunMethod():
     # def __init__(self,method,url,data=None):
     #     self.method=method

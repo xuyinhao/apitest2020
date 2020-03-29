@@ -1,18 +1,5 @@
 class global_var():
-    # 定义case 的列 id xlrd
-    # ID = 0
-    # url = 1
-    # run = 2
-    # method = 3
-    # header = 4
-    # case_depend = 5
-    # data_depend = 6
-    # filed_depend = 7
-    # request_data = 8
-    # expect_result = 9
-    # current_result = 10
-    # test_result = 11
-    # # openpyxl 是从1开始计算的
+    # 定义case 的列 id . openpyxl
     ID = 1
     url = 2
     run = 3

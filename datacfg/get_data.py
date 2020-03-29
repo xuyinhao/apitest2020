@@ -1,4 +1,4 @@
-from utils.operation_excel2 import OperationExcel
+from utils.operation_excel import OperationExcel
 from datacfg import data_config
 from utils.operation_json import OperationJson
 from utils.common_util import CommonUtil

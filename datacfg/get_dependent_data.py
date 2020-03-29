@@ -1,7 +1,7 @@
 from base.runhttp import RunMethod
 from datacfg.get_data import GetData
 from utils.common_util import CommonUtil
-from utils.operation_excel2 import OperationExcel
+from utils.operation_excel import OperationExcel
 from jsonpath_rw import jsonpath, parse
 import json
 
