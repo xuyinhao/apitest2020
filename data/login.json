@@ -1,0 +1,22 @@
+{
+"login1":{
+  "username":"1xyh",
+  "password":111111
+  },
+  "login2":{
+  "username":"2中文x",
+  "password":222222
+  },
+  "login3":{
+  "username":"3中文",
+  "password":333333,
+    "mobile": 17606119611
+  },
+  "devinfo": {
+    "startdevid": 2,
+    "num": 4
+  },
+  "devinfos":{
+    "devid":"1,2,3"
+}
+}
