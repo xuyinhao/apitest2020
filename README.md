@@ -18,6 +18,6 @@ apitest2020 : study api test \
 5. main:  执行入口
 6. utils: 存放通用的工具、操作方法
 ###
-    z_djangodir : 简单的djangodir 用于测试学习用 
+    z_djangodir : 简单的django 用于测试学习用 
 
  
