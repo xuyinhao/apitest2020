@@ -1,6 +1,7 @@
 try:
     import requests
     import json
+    from lxml import etree
 except:
     print("Import error")
 
@@ -10,6 +11,16 @@ class RunMethod():
     #     self.url = url
     #     self.data = data
     #get请求的 请求
+
+    def _html_trans(self,result):
+        result.encoding = 'utf-8'
+        html = etree.HTML(result.content)
+        html_v = etree.tostring(html,encoding='utf-8').decode('utf-8')
+        return  html_v
+
+    def _json_trans(self,result):
+        return  json.dumps(result.json(), indent=2, sort_keys=True, ensure_ascii=False)
+
     def _send_get(self,url, data=None, header=None):
         res = None
         if header != None:
@@ -17,12 +28,18 @@ class RunMethod():
         else:
             res = requests.get(url, params=data)
         # print(res.content)
+
         try:
-            res_to_list = [res.status_code, json.dumps(res.json(), indent=2, sort_keys=True, ensure_ascii=False)]
+            res_to_list = [res.status_code, self._json_trans(res)]
             return res_to_list
         except:
-            # return [res.status_code,res.content]
-            return [res.status_code,res.content]
+
+            html_data = self._html_trans(res)
+            return [res.status_code,html_data]
+
+            # res.encoding = 'utf-8'
+            # return [res.status_code,res.text]
+            ##res.text 文本格式 ， res.content 二进制格式，可以下载图片，文件等
 
 
     ''' post 请求
@@ -35,10 +52,11 @@ class RunMethod():
         else:
             res = requests.post(url, data=data)
         try:
-            res_to_list = [res.status_code, json.dumps(res.json(), indent=2, sort_keys=True, ensure_ascii=False)]
+            res_to_list = [res.status_code, self._json_trans(res)]
             return res_to_list
         except:
-            return [res.status_code, res.content]
+            html_data = self._html_trans(res)
+            return [res.status_code, html_data]
 
     #返回日志
     def log_code(self, level, code, msg):
@@ -68,7 +86,10 @@ if __name__ == '__main__':
     login_url = 'http://127.0.0.1:8000/test01'
     # data = {'username': '1xyh中文', 'mobile': '123456'}
     # data="username=xyh"
-    data = {"startdevid": 1,"num":2}
+    # data = {"startdevid": 1,"num":2}
+    # res = RunMethod()
+    # res = res.run_main('post', login_url, data)
+    # print(res)
+    url = "https://www.baidu.com"
     res = RunMethod()
-    res = res.run_main('post', login_url, data)
-    print(res)
+    print(res.run_main('get',url))
