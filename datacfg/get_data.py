@@ -58,12 +58,18 @@ class GetData():
         method = self.opera_excel.get_cell_value(row, col)
         return self.trans_value(method)
 
+    #获取 cookie列 值
+    def get_is_cookie(self,row):
+        col = data_config.get_cookie_col()
+        is_cookie = self.opera_excel.get_cell_value(row,col)
+        return self.trans_value(is_cookie)
+
     # 是否携带 header
     def get_is_header(self, row):
         col = data_config.get_header_col()
         is_header = self.opera_excel.get_cell_value(row, col)
         if str(is_header).lower() == "yes":
-            return self.trans_value(data_config.get_header_col())
+            return self.trans_value(data_config.get_header_info())
         else:
             return None
 
@@ -98,9 +104,13 @@ class GetData():
 
     # 通过关键字拿到 request_data数据
     def get_request_data_from_json(self, row):
-        opera_json = OperationJson()
-        request_data = opera_json.get_value(self.get_request_data(row))
-        return self.trans_value(request_data)
+        request_data = self.get_request_data(row)       #请求数据，关键字
+        if request_data:
+            opera_json = OperationJson()
+            request_data = opera_json.get_value(request_data)
+            return self.trans_value(request_data)
+        else:
+            return None     #没有请求数据，则返回None
 
     # 获取预期结果
     def get_expect_result(self, row):
@@ -117,6 +127,7 @@ class GetData():
             return True
         else:
             return False
+
 
     #写 当前结果到excel
     def write_current_result(self, row, value):
