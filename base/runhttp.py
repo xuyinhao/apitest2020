@@ -34,7 +34,6 @@ class RunMethod():
             res_to_list = (res.status_code, self._json_trans(res),res)
             return res_to_list
         except:
-
             html_data = self._html_trans(res)
             return (res.status_code,html_data,res)
 
@@ -84,13 +83,13 @@ class RunMethod():
 
 
 if __name__ == '__main__':
-    login_url = 'http://127.0.0.1:8000/test01'
+    # login_url = 'http://127.0.0.1:8000/test01'
     # data = {'username': '1xyh中文', 'mobile': '123456'}
     # data="username=xyh"
     # data = {"startdevid": 1,"num":2}
     # res = RunMethod()
     # res = res.run_main('post', login_url, data)
     # print(res)
-    url = "https://www.baidu.com"
+    url = "http://www.baidu.com"
     res = RunMethod()
     print(res.run_main('get',url))

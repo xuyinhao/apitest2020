@@ -25,9 +25,13 @@ class OperationJson():
     # 通过key 获取value
     def get_value(self, key):
         json_data = self.__get_file_data()
-        return json_data[key]
+        return json_data[str(key).replace("json_","")]
 
-    #写cookie
+    def get_filevalue(self):
+        data=self.__get_file_data()
+        return data
+
+    #写cookie\token
     def write_data(self,value):
         with open(self.file_name,'w',encoding='utf-8') as fp:
             fp.write(json.dumps(value))

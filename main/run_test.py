@@ -9,7 +9,10 @@ from utils.common_util import CommonUtil
 from utils.send_mail import SendMail
 from datacfg.get_dependent_data import DependentData
 from utils.operation_cookie import OperationCookie
+from utils.operation_token import OperationToken
+from main._token_refresh import TokenCheck
 import json
+import traceback
 
 class RunTest():
     def __init__(self):
@@ -18,6 +21,8 @@ class RunTest():
         self.com_util = CommonUtil()
         self.send_mail = SendMail()
         self.op_cookie = OperationCookie()
+        self.op_token = OperationToken()
+        self.token_check=TokenCheck()
         self.fail_count = []
         self.break_count=[]
         self.pass_count = []
@@ -38,16 +43,17 @@ class RunTest():
             print('Start case : ', self.get_data.get_case_id_name(i))
             try:
                 method = self.get_data.get_request_method(i)
-                url = self.get_data.get_url(i)
-                data = self.get_data.get_request_data_from_json(i)
-                header = self.get_data.get_is_header(i)   #获取的 header的值
+                url = self.get_data.get_url_final(i)
+                data = self.get_data.get_request_data_final(i)
+             #@  header = self.get_data.get_is_header(i)   #获取的 header的值
+                header = self.get_data.get_header_info(i)  #获取的 header的值
                 is_cookie = self.get_data.get_is_cookie(i)
                 expect_result = self.get_data.get_expect_result(i)
                 # 判断是否有 依赖，如果有 就进行依赖case的测试。如果没有就 直接进行 该api基本测试
                 # dp_caseid = self.get_data.get_dependent_caseid(i)
                 is_dependent = self.get_data.get_is_dependent(i)
             except Exception as  e:
-                print("----Has some error : ",e)
+                print("----Has some error : ",e.with_traceback())
                 self.break_count.append(i)
                 print('----break case')
                 self.get_data.write_test_result(i, 'break'+str(e))
@@ -65,19 +71,39 @@ class RunTest():
                 filed_data = self.get_data.get_dependent_filed(i)   #获取 当前case 要被替换的字段内容
                 data[filed_data] = dependent_response_data
 
-            #处理cookie : write ,yes ,no
-            if is_cookie == "write":
+            #处理cookie : wc更新cookies,yc携带cookies ,nc不需要cookies
+            if is_cookie == "wc":   #需要更新cookies,通过响应值获取ck
                 run_response_data = self.run_method.run_main(method,url, data=data, header=header)
                 op_cookie = OperationCookie()
                 cookie_value  = op_cookie.trans_response_cookie_value(run_response_data[2])
                 op_cookie.write_cookie(cookie_value)
-            elif is_cookie == "yes":
+            elif is_cookie == "yc":
                 # self.op_cookie.get_cookie('loongaio')
                 cookie = self.op_cookie.get_cookie_file_data()
                 cookie = json.loads(cookie)
                 run_response_data = self.run_method.run_main(method, url, data=data, cookie=cookie, header=header)
-            else:
+            elif is_cookie == "nc":
                 run_response_data = self.run_method.run_main(method, url, data=data,header=header)
+
+            elif is_cookie == "wt": #需要更新token,通过响应值获取token
+                run_response_data = self.run_method.run_main(method, url, data=data, header=header)
+                # print("#$$# :",str(run_response_data))
+                op_token=OperationToken()
+                token_value=op_token.trans_response_token_value_by_body(run_response_data[2])
+                op_token.write_token(token_value)
+            elif is_cookie == "yt":
+                token=self.op_token.get_token()
+                header["token"]=token           ##根据当前web系统适当调整，这里的token是加在header
+                run_response_data = self.run_method.run_main(method, url, data=data, header=header)
+                if self.token_check.check_token_exception(run_response_data):
+                    token = self.op_token.get_token()
+                    header["token"] = token  ##根据当前web系统适当调整，这里的token是加在header
+                    run_response_data = self.run_method.run_main(method, url, data=data, header=header)
+            else:
+                run_response_data = self.run_method.run_main(method, url, data=data, header=header)
+            #处理token
+
+
 
             # 执行请求 , 获得的结果，list[0]为响应code, [1]为结果 , [2] 为 response 本身。 把当前 实际结果写到excel
             self.get_data.write_current_result(i, str(run_response_data[1]))
@@ -99,7 +125,7 @@ class RunTest():
         f_arr = []
         for i in self.fail_count:
             r_info = '[' + self.get_data.get_current_sheet_name() + '] ' + 'Row: ' + str(i) + ', caseid : ' +\
-                     self.get_data.get_case_id_name(i) + ', Url : ' + self.get_data.get_url(i)
+                     self.get_data.get_case_id_name(i) + ', Url : ' + self.get_data.get_url_final(i)
             f_arr.append(r_info)
         return f_arr
 

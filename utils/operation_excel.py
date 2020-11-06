@@ -1,6 +1,9 @@
 # 使用 openpyxl
 import openpyxl
 import sys
+# 导入字体、边框、颜色以及对齐方式相关库
+
+from openpyxl.styles import PatternFill
 
 
 class OperationExcel():
@@ -17,6 +20,10 @@ class OperationExcel():
             self.sheet_name = sheet_name
         else:
             self.sheet_name = "login"
+
+        self.pass_font = PatternFill(fill_type='solid',fgColor="00FF33")
+        self.fail_font = PatternFill(fill_type='solid',fgColor="FF0000")
+        self.else_font = PatternFill(fill_type='solid',fgColor="FFFF00")
 
         self.ws = self.__get_sheet_data()
 
@@ -76,7 +83,15 @@ class OperationExcel():
             now_row_col = '. Now col: ' + str(col)
             return str(sys._getframe().f_code.co_name) + "Error : " + str(e) + now_row_col
 
-    def write_cell_value(self, row, col, cellvalue):
+    def write_cell_value(self, row, col, cellvalue,result=None):
+        if result:
+            if str(result) == "pass":
+                self.ws.cell(row,col).fill=self.pass_font
+            elif str(result) == "fail":
+                self.ws.cell(row, col).fill=self.fail_font
+            else:   #yellow
+                self.ws.cell(row, col).fill=self.else_font
+
         try:
             self.ws.cell(row=row, column=col).value = cellvalue
             self.wb.save(self.file_name)
@@ -91,10 +106,10 @@ if __name__ == '__main__':
     import time
 
     print(time.time())
-    ex = OperationExcel(file_name='../data/case2.xlsx')
+    ex = OperationExcel(file_name='../data/case.xlsx')
     # ex.write_cell_value(1,1,"ID")
-    print(ex.get_cell_value(0, 1))
-    print(ex.get_col_value(99))
+    print(ex.get_cell_value(2, 2))
+    print(ex.get_col_value(1))
     # ex.write_cell_value(0,0)
     print(time.time())
 

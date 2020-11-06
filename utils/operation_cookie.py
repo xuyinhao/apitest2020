@@ -2,6 +2,10 @@ import requests
 import json
 from utils.operation_json import OperationJson
 
+"""
+每个测试平台脚本可能不一样的方式
+获取token认证值
+"""
 
 class OperationCookie():
     def __init__(self, cookie_path=None):
