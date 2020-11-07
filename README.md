@@ -17,6 +17,11 @@ apitest2020 : study api test \
     z_djangodir : 简单的django 用于测试学习用 
 ## TODO
 
-  增加正则获取响应中的值，保存给后边的接口使用
+  增加正则获取响应中的值，保存给后边的接口使用 
+  
+  
+  
+  
+   
 
  

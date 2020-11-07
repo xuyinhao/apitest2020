@@ -3,8 +3,8 @@ class global_var():
     var_arr = []       #1   2          3        4        5      6          7
     var_arr = ["NULL","ID","modname","apiname","url","isrun","method","cookie",
                "header","dependent_caseid","dependent_data",        #8 9 10
-               "dependent_filed","request_data","save_value","expect_result", "except_code" ,  #11 12 13 14 15
-               "current_result","current_code","dbcheck","test_result","comment"]    # 16 17 18 19 20
+               "dependent_filed","request_data","save_value","expect_result", "expect_code" ,  #11 12 13 14 15
+               "dbcheck","current_result","current_code","test_result","comment"]    # 16 17 18 19 20
 
 
 

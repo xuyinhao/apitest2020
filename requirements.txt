@@ -1,0 +1,14 @@
+certifi==2020.6.20
+chardet==3.0.4
+decorator==4.4.2
+et-xmlfile==1.0.1
+idna==2.10
+jdcal==1.4.1
+jsonpath-rw==1.4.0
+lxml==4.6.1
+openpyxl==3.0.5
+ply==3.11
+PyMySQL==0.10.1
+requests==2.24.0
+six==1.15.0
+urllib3==1.25.11

@@ -102,10 +102,10 @@ class GetData():
     def get_header_info(self,row):
         col=data_config.get_header_col()
         headerinfo=self.opera_excel.get_cell_value(row,col)
-        if str(headerinfo) != "" or str(headerinfo) != None:
-            return json.loads(headerinfo)
-        else:
+        if str(headerinfo) == "" or headerinfo == None:
             return None
+        else:
+            return json.loads(headerinfo)
 
     # 获取 dependent caseid name
     def get_dependent_caseid(self, row):
@@ -155,10 +155,10 @@ class GetData():
     def get_save_value(self,row):
         col=data_config.get_save_value_col()
         savevalue = self.opera_excel.get_cell_value(row,col)
-        if str(savevalue) != "" or str(savevalue) != None:
-            return str(savevalue)
-        else:
+        if str(savevalue) == "" or savevalue == None:
             return None
+        else:
+            return str(savevalue)
 
     # 获取预期响应结果
     def get_expect_result(self, row):
@@ -212,7 +212,7 @@ class GetData():
         else:
             return False
 
-    #写 当前响应到excel
+    #写 当前响应code到excel
     def write_current_code(self,row,value):
         col=data_config.get_current_code_col()
         writevalue = self.opera_excel.write_cell_value(row,col,value)

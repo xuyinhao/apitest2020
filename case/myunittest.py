@@ -3,7 +3,7 @@ from unittest import mock
 from base.runhttp import RunMethod
 import time
 from base.mock_demo import mock_def_test,mock_direct
-import HTMLTestRunner
+from  base import HTMLTestRunner
 login_url = 'http://127.0.0.1:8000/login'
 data = {'username': 'xyh', 'password': '123456'}
 
