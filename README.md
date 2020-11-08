@@ -16,9 +16,14 @@ apitest2020 : study api test \
 ###
     z_djangodir : 简单的django 用于测试学习用 
 ## TODO
-
-  增加正则获取响应中的值，保存给后边的接口使用 
-  
+ 依赖caseid重新调整
+  报告的优化展示（allure)
+    
+   接口用例编写的自动化或者是半自动化（swagger接口，自动转换到excel里面）
+    
+   代码调整‘优化！
+   
+   文档完善
   
   
   
