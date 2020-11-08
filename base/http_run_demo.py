@@ -1,9 +1,8 @@
-try:
-    import requests
-    import json
-except:
-    print("Import error")
 
+import requests
+import json
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 class RunMain():
     # def __init__(self,method,url,data=None):

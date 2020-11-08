@@ -1,5 +1,6 @@
 from unittest import mock
-
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 # 模拟mock封装
 # run.run_main,'GET',login_url,data,"abc"

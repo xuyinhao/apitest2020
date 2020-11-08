@@ -1,5 +1,7 @@
 import smtplib
 from  email.mime.text import MIMEText
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 ##MIMEText
 class SendMail():

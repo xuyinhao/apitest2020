@@ -4,9 +4,8 @@
 '''
 from datacfg.get_conf import GetConf
 from utils.common_util import CommonUtil
-import json
-import traceback
-from configparser import NoOptionError
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 class OpValue():
     def __init__(self):
@@ -25,7 +24,7 @@ class OpValue():
                 getv = self.getcfg.read_conf_value_toexcel(key)  # 获取key的值
                 data_ret = self.comtool.res_value_replace(key, getv, str(data_ret))  # 替换data的赋值给data_ret
             except Exception as e:
-                print("替换excel的变量失败，确认变量存在，跳过替换。",e)
+                print("替换excel的变量失败。 确认%s变量存在。跳过替换。"%key,e)
                 pass
 
 

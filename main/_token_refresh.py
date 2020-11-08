@@ -4,6 +4,8 @@
 '''
 from utils.common_util import CommonUtil
 from datacfg.get_dependent_data import DependentData
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 #check_token_exception
 class TokenCheck():
@@ -35,3 +37,4 @@ class TokenCheck():
         #重新执行，获取token接口
         ret = self.depent_data.force_runcase_by_caseid(loginid, token=True)
         return ret
+
