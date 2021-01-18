@@ -1,6 +1,7 @@
 import requests
-import json
 from utils.operation_json import OperationJson
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 """
 每个测试平台脚本可能不一样的方式

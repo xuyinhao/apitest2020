@@ -2,8 +2,9 @@
 import openpyxl
 import sys
 # 导入字体、边框、颜色以及对齐方式相关库
-
 from openpyxl.styles import PatternFill
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 
 class OperationExcel():

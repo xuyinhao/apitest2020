@@ -1,9 +1,8 @@
-try:
-    import requests
-    import json
-    from lxml import etree
-except:
-    print("Import error")
+import requests
+import json
+from lxml import etree
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 class RunMethod():
     # def __init__(self,method,url,data=None):
@@ -72,6 +71,7 @@ class RunMethod():
         return r
 
     def run_main(self, method, url, data=None, cookie = None, header=None):
+        log.debug("方法："+str(method)+", url: "+str(url)+", data:"+str(data) + ", ck:" + str(cookie)+", header: "+str(header))
         if method.lower() == 'get':
             r = self._send_get(url, data, cookie,header)
         elif method.lower() == 'post':
@@ -92,4 +92,4 @@ if __name__ == '__main__':
     # print(res)
     url = "http://www.baidu.com"
     res = RunMethod()
-    print(res.run_main('get',url))
+    log.info(res.run_main('get',url))

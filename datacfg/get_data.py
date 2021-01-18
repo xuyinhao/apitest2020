@@ -1,9 +1,12 @@
+
 from utils.operation_excel import OperationExcel
 from datacfg import data_config,op_excel_value
 from datacfg.get_conf import GetConf
 from utils.operation_json import OperationJson
 from utils.common_util import CommonUtil
 import json
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 class GetData():
     def __init__(self, filename=None, sheet_id=None):
@@ -103,7 +106,7 @@ class GetData():
         col=data_config.get_header_col()
         headerinfo=self.opera_excel.get_cell_value(row,col)
         if str(headerinfo) == "" or headerinfo == None:
-            return None
+            return {}
         else:
             return json.loads(headerinfo)
 
@@ -129,7 +132,7 @@ class GetData():
         return filed_data
 
     # 获取请求数据
-    def get_request_data(self, row):
+    def _get_request_data(self, row):
         col = data_config.get_request_data_col()
         data = self.opera_excel.get_cell_value(row, col)
         if data == "":
@@ -137,9 +140,9 @@ class GetData():
 
         return self.trans_value(data)
 
-    # 通过关键字拿到 request_data数据
+    # 通过关键字拿到 请求体，request_data数据
     def get_request_data_final(self, row):
-        request_data = self.get_request_data(row)       #请求数据，关键字
+        request_data = self._get_request_data(row)       #请求数据，关键字
 
         if str(request_data).startswith("json_"):       #如果json_开头则进行json获取
             opera_json = OperationJson()
@@ -151,6 +154,7 @@ class GetData():
         else:
             return None                  #没有请求数据，则返回None
 
+
     #保存响应中的指定值（json获取方式）
     def get_save_value(self,row):
         col=data_config.get_save_value_col()
@@ -161,12 +165,33 @@ class GetData():
             return str(savevalue)
 
     # 获取预期响应结果
-    def get_expect_result(self, row):
+    def _get_expect_result(self, row):
         col = data_config.get_expect_result_col()
         expect_value = self.opera_excel.get_cell_value(row, col)
         if expect_value == "":
             return None
         return self.trans_value(expect_value)
+
+    def get_expect_result_final(self,row):
+        '''
+        获取预期结果，返回数组类型
+        :param row:
+        :return: type:list
+        '''
+        expect_result=self._get_expect_result(row)
+        if str(expect_result).startswith("json_"):  # 如果json_开头则进行json获取
+            opera_json = OperationJson()
+            expect_data = opera_json.get_value(expect_result)
+            print('通过json配置的预期结果断言###值为：',expect_data)
+            return list(str(self.trans_value(expect_data)).split(','))
+        elif str(expect_result) != "":
+            expect_data = self.op_excel_value.replace_value(expect_result)  # 更新替换excel请求中带的变量
+            return list(str(self.trans_value(expect_data)).split(','))  # 如果不为空，不是json_开头，那么就替换变量再返回数据
+        elif str(expect_result) == "" or expect_result==None:
+            return []  # 没有请求数据，则返回None
+        else:
+            return ["ERROR_FOUND_EXPECT_RESULT"]
+
 
     #获取预期响应code
     def get_expect_code(self, row):
@@ -234,7 +259,7 @@ class GetData():
 
 if __name__ == '__main__':
     ab = GetData()
-    print(ab.get_request_data_final(3))
-    print(ab.get_request_data(2))
+    log.info(ab.get_request_data_final(3))
+    print(ab._get_request_data(2))
     # print(ab.get_expect_result(2))
     # print(ab.get_case_row_by_idname('login_01'))

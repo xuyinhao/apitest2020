@@ -1,6 +1,7 @@
 import json
 import os
-
+from base.LogUtil import my_log
+log=my_log(__file__)
 # json_data = json.load(open("../datacfg/login.json"))
 # print(json_data["login"])
 
@@ -9,7 +10,7 @@ class OperationJson():
         if file_name:
             self.file_name = file_name
         else:
-            self.file_name = "../data/login.json"
+            self.file_name = "../data/jsonfile.json"
         self.data = self.__get_file_data()
 
     # 获取json句柄 对象 文件

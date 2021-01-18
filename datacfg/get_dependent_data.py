@@ -6,7 +6,8 @@ from jsonpath_rw import jsonpath, parse
 from utils.operation_cookie import OperationCookie
 from utils.operation_token import OperationToken
 import json
-
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 class DependentData():
     def __init__(self):
@@ -30,7 +31,7 @@ class DependentData():
         url = self.get_data.get_url_final(i)
         data = self.get_data.get_request_data_final(i)
         header = self.get_data.get_header_info(i)
-        expect_result = self.get_data.get_expect_result(i)
+        expect_result = self.get_data.get_expect_result_final(i)
         # 执行请求 , 获得的结果，list[0]为响应code, [1]为结果
 
         if token:

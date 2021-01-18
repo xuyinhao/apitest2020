@@ -1,5 +1,6 @@
 import sqlite3
-
+from base.LogUtil import my_log
+log=my_log(__file__)
 file = "../data/apidb202004.db"
 
 class OperationSqlite3():

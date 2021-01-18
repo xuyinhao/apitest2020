@@ -1,6 +1,8 @@
 import pymysql
 # bit类型 转换
 from pymysql import converters
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 converions = converters.conversions
 converions[pymysql.FIELD_TYPE.BIT] = lambda x: '0' if '\x00' else '1'

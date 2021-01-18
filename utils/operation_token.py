@@ -2,10 +2,9 @@
 每个测试平台脚本可能不一样的方式
 获取token认证值
 """
-import requests
-import json
 from utils.operation_json import OperationJson
-
+from base.LogUtil import my_log
+log=my_log(__file__)
 
 class OperationToken():
     def __init__(self, token_path=None):
@@ -29,7 +28,7 @@ class OperationToken():
 
     def trans_response_token_value_by_body(self,response):
         tk_value=response.json()["data"]["token"]
-        print('token value:',tk_value)
+        print('获取到token value:',tk_value)
         return tk_value
 
     def trans_respons_token_value_by_headers(self,response):
