@@ -22,3 +22,4 @@ if __name__ == '__main__':
     value="data[0]"
     current_result='{"data":["aaaa","bbb"]}'
     # sbv.save_value_to_conf(value,current_result)
+    
