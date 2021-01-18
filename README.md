@@ -1,6 +1,7 @@
 # apitest2020
 apitest2020 : study api test \
 学习接口自动化测试
+ dev test
 ##基本使用
 支持参数变量配置
 支持token失效重新获取并重跑
