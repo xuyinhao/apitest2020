@@ -1,5 +1,6 @@
 # apitest2020
 apitest2020 : study api test \
+master 1:
 学习接口自动化测试
 ##基本使用
 支持参数变量配置
