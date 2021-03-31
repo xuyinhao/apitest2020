@@ -5,7 +5,7 @@ et-xmlfile==1.0.1
 idna==2.10
 jdcal==1.4.1
 jsonpath-rw==1.4.0
-lxml==4.6.2
+lxml==4.6.3
 openpyxl==3.0.5
 ply==3.11
 PyMySQL==0.10.1
